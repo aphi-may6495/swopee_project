@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <style>
+      body{
+        background-color: rgba(245, 245, 245, 0.5);
+      }
+      .category:link,.category:visited{
+        display: inline-block;
+        color:black;
+        text-decoration:none;
+        height: 50px;
+        width: 50px;
+        border: 1px solid black;
+        border-radius: 15px;
+        padding: 5px;
+        text-align: center; 
+        width:16%;
+        margin:auto;
+      }
+      .category:hover,.category:active{
+        background-color: gray;
+        color:white;
+      }
+      .itemList{
+        border:2px solid black;
+        background-color: grey;
+        height: 200px;
+      }
+      .imgItem{
+        max-width: 100%;
+        height: auto;
+      }
+      .float{
+        position:fixed;
+        width:60px;
+        height:60px;
+        bottom:40px;
+        right:40px;
+        background-color:#f1c40f;
+        border-radius:50px;
+        text-align:center;
+        box-shadow: 2px 2px 3px #999;
+        color: white;
+        font-size: 35px;
+      }
+      .float:hover{
+        text-decoration: none;
+        color:white;
+      }
+    </style>
+  </head><!--------------------------------close head -------------------------------->
+  <body style="background-color: rgba(245, 245, 245, 0.5);">
+    <header style="background-color: #f1c40f;">
+      <div style="position:absolute;top:8px;right:16px;font-size: 12px;color: white;">
+        <a href="http://localhost:3000/notification" style="color: white;">การแจ้งเตือน</a> |
+        <a href="http://localhost:3000/history" style="color: white;">ประวัติการแลกเปลี่ยน</a> |
+        <a href="http://localhost:3000/register" style="color: white;">สมัครสมาชิก</a> |
+        <a href="http://localhost:3000/login" style="color: white;">เข้าสู่ระบบ</a>
+      </div>
+      <div class="container" style="text-align: center;padding-top: 40px;padding-bottom: 10px;width: 100%;">
+        <div style="display: inline-block;font-weight: bold;font-size: 40px;color: white;width: 20%;">Swopee</div>
+        <div style="display: inline-block;width: 70%;">
+          <form>
+            <input type="text" aria-label="Search" style="border-radius: 10px;padding-left: 10px;" size="50px">
+            <button id="search_btn" type="submit" style="border: none;border-radius: 15px;background-color: white;padding: 4px 10px 4px;">Search</button>
+          </form>
+        </div>
+      </div>
+    </header><!-------------------------------- close header -------------------------------->
+    <div style="background-color: white;padding:20px 0px;margin: 10px 50px;">
+      <div class="container">
+        <div style="text-align: center;font: 20px bold;">หมวดหมู่</div>
+      </div>
+      <div style="text-align: center;margin-top: 20px;">
+        <a href="http://localhost:3000/category/male-clothing" class="category">เสื้อผ้าผู้ชาย</a>
+        <a href="http://localhost:3000/category/female-clothing" class="category">เสื้อผ้าผู้หญิง</a>
+        <a href="http://localhost:3000/category/games" class="category">เกมส์</a>
+        <a href="http://localhost:3000/category/electronic" class="category">เครื่องใช้ไฟฟ้า</a>
+        <a href="http://localhost:3000/category/sports" class="category">อุปกรณกีฬา</a>
+        <a href="http://localhost:3000/category/computer" class="category">คอมพิวเตอร์</a>
+      </div>
+    </div><!-------------------------------- close catagory -------------------------------->
+    <div id="main_list" class="container-fluid" style="background-color: white;padding:1% 2%;">
+      <div id="row_of_list" class="row">
+        <div class="itemList col-md-3 col-sm-4 col-xs-6">
+          <a class="itemList col-md-3 col-sm-4 col-xs-6"><img src="/" ></a>
+        </div>
+        <div class="itemList col-md-3 col-sm-4 col-xs-6">
+          <img src="/" >
+        </div>
+      </div><!-------------------------------- close row -------------------------------->
+    </div><!-------------------------------- close itemlist -------------------------------->
+    <a href="#" class="float">
+      +
+    </a><!-------------------------------- close float_btn -------------------------------->
+  </body>
+  <script>
+
+    var getListUrl = "http://localhost:3000/getList"
+    $(document).ready(function(){
+      $("#row_of_list").remove();
+      $("#main_list").append('<div id="row_of_list" class="row"></div>');
+      $.getJSON(url,function(data,status){
+        if(data.empty()){
+          var ilistn = $('<div class="container-fluid" style="text-align:center;">No Item Results</div>');
+          $("#row_of_list").append(ilistn);
+        }else{
+          for(i=0;i<10;i++){
+            var ilist = $('<div class="itemList col-md-3 col-sm-4 col-xs-6"><a href="http://localhost:3000/item/'+data[i]["itemid"]+'"><img class="imgItem" src="'+data[i]["imageid"]+'" ></a></div>')
+            $("#row_of_list").append(ilist);
+          }
+        }
+      });
+    });
+    $("search_btn").click(function(){
+
+    });
+  </script>
+</html>
